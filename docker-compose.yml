@@ -23,6 +23,8 @@ services:
             - mariadb_data:/var/lib/mysql
         ports:
             - 3301:3306
+        networks:
+            - shared-network
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -34,6 +36,8 @@ services:
             MYSQL_ROOT_PASSWORD: password
         ports:
             - 8081:80
+        networks:
+            - shared-network
 volumes:
     mariadb_data:
 

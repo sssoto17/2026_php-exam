@@ -1,0 +1,240 @@
+/* VARIABLES */
+
+:root {
+	--layout-margin: minmax(5svw, 1fr);
+	--layout-content-width: minmax(0, 1200px);
+
+	--color-brand-50: #fcedf3;
+	--color-brand-100: #fadeea;
+	--color-brand-200: #f6b8d3;
+	--color-brand-300: #f393c0;
+	--color-brand-400: #ef64ad;
+	--color-brand-500: #de3a98;
+	--color-brand-600: #b12c78;
+	--color-brand-700: #89205c;
+	--color-brand-800: #5f133e;
+	--color-brand-900: #3b0826;
+	--color-brand-950: #260417;
+
+	--color-accent-50: #efffd9;
+	--color-accent-100: #e7ffc3;
+	--color-accent-200: #ccff60;
+	--color-accent-300: #bff800;
+	--color-accent-400: #b8ef00;
+	--color-accent-500: #b1e600;
+	--color-accent-600: #abdb32;
+	--color-accent-700: #7aa000;
+	--color-accent-800: #4f6900;
+	--color-accent-900: #273500;
+	--color-accent-950: #151f00;
+
+	--color-neutral-50: #f5f3f4;
+	--color-neutral-100: #ece7e9;
+	--color-neutral-200: #dbd2d7;
+	--color-neutral-300: #c9bac2;
+	--color-neutral-400: #b7a3ae;
+	--color-neutral-500: #a78d9c;
+	--color-neutral-600: #876d7c;
+	--color-neutral-700: #65525d;
+	--color-neutral-800: #453740;
+	--color-neutral-900: #261d22;
+	--color-neutral-950: #181115;
+
+	--clr-copy: var(--color-neutral-900);
+
+	/* @link https://utopia.fyi/type/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+	--step--2: clamp(0.7813rem, 0.7747rem + 0.0326vw, 0.8rem);
+	--step--1: clamp(0.9375rem, 0.9158rem + 0.1087vw, 1rem);
+	--step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+	--step-1: clamp(1.35rem, 1.2761rem + 0.3696vw, 1.5625rem);
+	--step-2: clamp(1.62rem, 1.5041rem + 0.5793vw, 1.9531rem);
+	--step-3: clamp(1.944rem, 1.771rem + 0.8651vw, 2.4414rem);
+	--step-4: clamp(2.3328rem, 2.0827rem + 1.2504vw, 3.0518rem);
+	--step-5: clamp(2.7994rem, 2.4462rem + 1.7658vw, 3.8147rem);
+
+	/* @link https://utopia.fyi/space/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem);
+	--space-2xs: clamp(0.5625rem, 0.5408rem + 0.1087vw, 0.625rem);
+	--space-xs: clamp(0.875rem, 0.8533rem + 0.1087vw, 0.9375rem);
+	--space-s: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+	--space-m: clamp(1.6875rem, 1.6223rem + 0.3261vw, 1.875rem);
+	--space-l: clamp(2.25rem, 2.163rem + 0.4348vw, 2.5rem);
+	--space-xl: clamp(3.375rem, 3.2446rem + 0.6522vw, 3.75rem);
+	--space-2xl: clamp(4.5rem, 4.3261rem + 0.8696vw, 5rem);
+	--space-3xl: clamp(6.75rem, 6.4891rem + 1.3043vw, 7.5rem);
+
+	/* One-up pairs */
+	--space-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435vw, 0.625rem);
+	--space-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522vw, 0.9375rem);
+	--space-xs-s: clamp(0.875rem, 0.7446rem + 0.6522vw, 1.25rem);
+	--space-s-m: clamp(1.125rem, 0.8641rem + 1.3043vw, 1.875rem);
+	--space-m-l: clamp(1.6875rem, 1.4049rem + 1.413vw, 2.5rem);
+	--space-l-xl: clamp(2.25rem, 1.7283rem + 2.6087vw, 3.75rem);
+	--space-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261vw, 5rem);
+	--space-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174vw, 7.5rem);
+
+	/* Custom pairs */
+	--space-s-l: clamp(1.125rem, 0.6467rem + 2.3913vw, 2.5rem);
+}
+
+/* RESET */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+button {
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+
+ul[role="list"] {
+	list-style: none;
+}
+
+/* LAYOUT */
+
+body {
+	min-height: 100svh;
+	display: grid;
+	grid-template-columns: var(--layout-margin) var(--layout-content-width) var(
+			--layout-margin
+		);
+	grid-template-rows: auto 1fr auto;
+	align-items: start;
+	color: var(--clr-copy);
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		"Open Sans",
+		"Helvetica Neue",
+		sans-serif;
+	font-size: var(--step-0);
+
+	> header,
+	> main,
+	> footer {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-columns: subgrid;
+		padding-block: var(--space-s);
+
+		> * {
+			grid-column: 2;
+		}
+	}
+}
+
+header.navigation {
+	background: white;
+	filter: drop-shadow(0 -6mm 4mm rgba(0, 0, 0, 0.75));
+	padding-block: var(--space-m);
+
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space-l);
+
+		ul {
+			display: flex;
+			gap: var(--space-s);
+			font-weight: 600;
+		}
+	}
+}
+
+.logo {
+	color: var(--color-accent-600);
+
+	strong {
+		color: var(--color-brand-500);
+	}
+}
+
+footer.global {
+	display: none;
+	background-color: var(--color-accent-600);
+	color: white;
+}
+
+.btn {
+	--clr-label: white;
+
+	color: var(--clr-label);
+	background-color: var(--clr-btn);
+	padding: var(--space-2xs) var(--space-s);
+	border-radius: 1rem;
+	transition: all 0.15s ease-out;
+	font-weight: 600;
+
+	&.primary {
+		--clr-btn: var(--color-brand-500);
+
+		&:hover {
+			--clr-btn: var(--color-brand-400);
+		}
+	}
+
+	&.secondary {
+		--clr-btn: var(--color-accent-600);
+		&:hover {
+			--clr-btn: var(--color-accent-500);
+		}
+	}
+}
+
+.flow-space {
+	> * + * {
+		margin-block-start: var(--flow-space, 1em);
+	}
+}
+
+form {
+	display: grid;
+	gap: var(--space-m);
+	max-width: 25rem;
+
+	label {
+		font-weight: 500;
+	}
+
+	div {
+		display: grid;
+		gap: var(--space-2xs);
+	}
+}
+
+input {
+	--clr-border: var(--color-neutral-200);
+	padding: var(--space-2xs);
+	outline: 1px solid var(--clr-border);
+	border: 1px solid var(--clr-border);
+	border-radius: 0.25rem;
+
+	&:focus,
+	&:focus-visible {
+		--clr-border: var(--color-neutral-300);
+	}
+}
