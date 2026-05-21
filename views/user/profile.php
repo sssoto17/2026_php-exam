@@ -5,7 +5,7 @@
         <section class="sidebar">
             <?= $this->insert("user::sidebar", ["user" => $user]) ?>
             <article>
-                <h2><?= $this->e($_SESSION["user"]->getUsername()) ?></h2>
+                <h2><?= $this->e($user->getUsername()) ?></h2>
             </article>
         </section>
     <?php endif ?>
