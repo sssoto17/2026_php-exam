@@ -32,7 +32,7 @@ class User {
     }
 
     public function setUsername(string $username): void {
-        $this->username = $username;
+        $this->username = _validate_username($username);
     }
 
     public function getFirstName(): string {
@@ -40,7 +40,7 @@ class User {
     }
 
     public function setFirstName(string $first_name): void {
-        $this->first_name = $first_name;
+        $this->first_name = _validate_name($first_name);
     }
 
     public function getLastName(): string {
@@ -48,7 +48,7 @@ class User {
     }
 
     public function setLastName(string $last_name): void {
-        $this->last_name = $last_name;
+        $this->last_name = _validate_name($last_name);
     }
 
     public function getEmail(): string {
@@ -56,15 +56,15 @@ class User {
     }
 
     public function setEmail(string $email): void {
-        $this->email = $email;
+        $this->email = _validate_email($email);
     }
 
     public function getPassword(): string {
         return $this->password;
     }
 
-    public function setPassword(string $password): void {
-        $this->password = $password;
+    public function setPassword(array $params): void {
+        $this->password = _validate_password($params["password"], $params["password_confirm"]);
     }
 
 }

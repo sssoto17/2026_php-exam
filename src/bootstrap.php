@@ -12,7 +12,7 @@ use League\Route\Strategy\ApplicationStrategy;
 define("APP_ROOT", dirname(__DIR__));
 
 require_once APP_ROOT . "/vendor/autoload.php";
-require_once APP_ROOT . "/private/_.php";
+require_once APP_ROOT . "/src/utils.php";
 
 $dotenv = Dotenv::createImmutable(APP_ROOT);
 $dotenv->load();

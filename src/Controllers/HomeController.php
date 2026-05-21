@@ -8,9 +8,15 @@ use Framework\Controller\AbstractController;
 use Psr\Http\Message\ResponseInterface;
 
 class HomeController extends AbstractController {
-    public function __construct(private \DateTime $dt) {}
+    public function __construct() {}
     
     public function index(): ResponseInterface {
-        return $this->render("home/index", ["name" => "<strong>Soto</strong>", "day" => $this->dt->format("l")]);
+        $isAuth = $this->verifySession();
+
+        if ($isAuth) {
+            return $this->render("user/index");
+        }
+
+        return $this->render("home/index");
     }
 }

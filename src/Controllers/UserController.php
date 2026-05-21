@@ -4,50 +4,120 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Exception;
 use App\Models\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Framework\Controller\AbstractController;
-use Framework\Template\RendererInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 
 class UserController extends AbstractController {
     public function __construct(private EntityManagerInterface $em) {}
 
     public function index(): ResponseInterface {
+        $isAuth = $this->verifySession();
+
+        if($isAuth){
         return $this->render("user/index");
+        }
+
+        return $this->redirect("/login");
     }
 
     public function profile(ServerRequestInterface $request, array $args): ResponseInterface {
-        $repo = $this->em->getRepository(User::class);
-        // $repo->find(User::class, $args["username"]);
-        $user = $repo->findOneBy(["username" => $args["username"]]);
-        return $this->render("user/dashboard", ["user" => $user]);
+        $isAuth = $this->verifySession();
+        
+        if ($isAuth) {
+            $repo = $this->em->getRepository(User::class);
+            $user = $repo->findOneBy(["username" => $args["username"]]);
+
+            return $this->render("user/profile", ["user" => $user]);
+        } else {
+            return $this->redirect("/login");
+        }
+    }
+        
+        public function login(ServerRequestInterface $request): ResponseInterface {
+        $isAuth = $this->verifySession();
+
+        if ($isAuth) {
+            $user = $_SESSION["user"];
+            
+            return $this->redirect("/{$user->getUsername()}");
+        }
+
+        if ($request->getMethod() === "POST") {
+            $parameters = $request->getParsedBody();
+            $repo = $this->em->getRepository(User::class);
+            
+            $user = $repo->findOneBy(["email" => $parameters["email"], "password" => trim($parameters["password"])]);
+            
+            if ($user) {
+                $_SESSION["user"] = $user;
+
+                return $this->redirect("/{$user->getUsername()}");
+            } else {
+                return $this->render("user/login", ["error" => "Wrong email or password.", "data" => $parameters]);
+            }
+        };
+
+        return $this->render("user/login");
     }
 
-    public function login(): ResponseInterface {
-        return $this->render("login/index");
+    public function logout(): ResponseInterface {
+        $isAuth = $this->verifySession();
+        
+        if ($isAuth) {
+            session_unset();
+            session_destroy();
+            _no_cache();
 
+            return $this->redirect("/login");
+            } else {
+                return $this->redirect("/");
+            }
     }
 
     public function create(ServerRequestInterface $request): ResponseInterface {
+        $isAuth = $this->verifySession();
+
+        if ($isAuth) {
+            $user = $_SESSION["user"];
+
+            return $this->redirect("/{$user->getUsername()}");
+        }
+
         if ($request->getMethod() === "POST") {
             $parameters = $request->getParsedBody();
 
-            $user = new User;
+            try {
+                $user = new User;
+    
+                $user->setEmail($parameters["email"]);
+                $user->setUsername($parameters["username"]);
+                $user->setFirstName($parameters["first_name"]);
+                $user->setLastName($parameters["last_name"]);
+                $user->setPassword($parameters);
 
-            $user->setEmail($parameters["email"]);
-            $user->setUsername($parameters["username"]);
-            $user->setFirstName($parameters["first_name"]);
-            $user->setLastName($parameters["last_name"]);
-            $user->setPassword($parameters["password"]);
+                $this->em->persist($user);
+                $this->em->flush();
 
-            $this->em->persist($user);
-            $this->em->flush();
+                $_SESSION["user"] = $user;
+    
+                return $this->redirect("/{$user->getUsername()}");
+            } catch (Exception $e) {
+                $error = "An error occurred.";
 
-            return $this->redirect("/profile/{$user->getUsername()}");
+                if (str_contains($e->getMessage(), "Duplicate entry")) {
+                    $error = "Email/username already exists. Please choose another.";
+                }
+
+                if ( str_contains(strtolower($e->getMessage()), "password")) {
+                    $error = $e->getMessage();
+                }
+                
+                return $this->render("user/create", ["error" => $error, "data" => $parameters]);
+            }
         };
 
         return $this->render("user/create");

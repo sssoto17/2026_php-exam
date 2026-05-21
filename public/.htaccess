@@ -1,2 +1,4 @@
 RewriteEngine On
 FallbackResource /index.php
+
+php_value upload_max_filesize 12m

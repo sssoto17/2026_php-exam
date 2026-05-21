@@ -1,12 +1,20 @@
 <?php $this->layout("layout", ["title" => "Gallery"]) ?>
 
 <main>
-    <p>Grid view of artwork</p>
-    <section>
-        <?php foreach($users as $user): ?>
-            <p><?= $this->e($user->getFirstName()) ?></p>
-            <p><?= $this->e($user->getLastName()) ?></p>
-            <p><?= $this->e($user->getEmail()) ?></p>
-        <?php endforeach; ?>
-    </section>
+    <?php if (isset($user)): ?>
+        <section class="sidebar">
+            <?= $this->insert("user::sidebar", ["user" => $user]) ?>
+            <article>
+                <h2><?= $this->e($_SESSION["user"]->getUsername()) ?></h2>
+                <h3>Gallery</h3>
+                <section class="gallery">
+                    <?php if (isset($gallery)): ?>
+                        <?php foreach($gallery as $artwork): ?>
+                            <?= $this->insert("gallery::card", ["artwork" => $artwork]) ?>
+                        <?php endforeach; ?>
+                    <?php endif ?>
+                </section>
+            </article>            
+        </section>
+    <?php endif ?>
 </main>

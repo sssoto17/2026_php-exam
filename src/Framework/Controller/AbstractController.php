@@ -30,4 +30,9 @@ abstract class AbstractController {
 
         return $response;
     }
+
+    protected function verifySession() {
+        session_start();
+        return isset($_SESSION["user"]);
+    }
 }
